@@ -18,7 +18,7 @@ spec:
       labels:
         app: {{ .Release.Name }}-assets
       annotations:
-        timestamp: {{ date "2006/01/02T15:04:05" .Release.Time | quote }}
+        timestamp: {{ now | quote }}
     spec:
       containers:
         - name: nginx
@@ -29,6 +29,8 @@ spec:
             - name: html
               mountPath: /usr/share/nginx/html
               subPath: {{ .Release.Name }}-assets/html
+            - name: config
+              mountPath: /etc/nginx/conf.d
           resources:
             requests:
               cpu: 100m
@@ -37,6 +39,9 @@ spec:
               cpu: 1000m
               memory: 1024M
       volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-assets
         - name: html
         {{- if .Values.pv.enabled }}
           persistentVolumeClaim:
