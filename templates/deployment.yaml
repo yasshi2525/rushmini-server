@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-rushmini-assets
+  name: {{ .Release.Name }}-assets
   namespace: {{ .Release.Namespace }}
 spec:
   strategy:
@@ -12,11 +12,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-rushmini-assets
+      app: {{ .Release.Name }}-assets
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-rushmini-assets
+        app: {{ .Release.Name }}-assets
       annotations:
         timestamp: {{ date "2006/01/02T15:04:05" .Release.Time | quote }}
     spec:
@@ -28,7 +28,7 @@ spec:
           volumeMounts:
             - name: html
               mountPath: /usr/share/nginx/html
-              subPath: {{ .Release.Name }}-rushmini-assets/html
+              subPath: {{ .Release.Name }}-assets/html
           resources:
             requests:
               cpu: 100m

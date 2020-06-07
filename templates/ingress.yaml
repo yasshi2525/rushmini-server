@@ -10,7 +10,7 @@ spec:
         paths:
           - path: /rushmini/assets/
             backend:
-              serviceName: {{ .Release.Name }}-rushmini-assets
+              serviceName: {{ .Release.Name }}-assets
               servicePort: 80
   {{- if .Values.tls.enabled }}
   tls:
