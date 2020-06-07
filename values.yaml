@@ -1,0 +1,17 @@
+hostname: localhost
+
+tls: 
+  enabled: false
+  # required if tls.enabled is true
+  cert: |-  
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  key: |-
+    -----BEGIN PRIVATE KEY-----
+    -----END PRIVATE KEY-----
+
+pv:
+  enabled: false
+  # required if pv.enabled is true
+  storageClassName: ""
+  capacity: "10Gi"

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-rushmini-assets
+  namespace: {{ .Release.Namespace }}
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-rushmini-assets
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-rushmini-assets
+      annotations:
+        timestamp: {{ date "2006/01/02T15:04:05" .Release.Time | quote }}
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+              subPath: {{ .Release.Name }}-rushmini-assets/html
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128M
+            limits:
+              cpu: 1000m
+              memory: 1024M
+      volumes:
+        - name: html
+        {{- if .Values.pv.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-storage-claim
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}

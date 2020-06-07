@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+    - host: {{ .Values.hostname }}
+      http:
+        paths:
+          - path: /rushmini/assets/
+            backend:
+              serviceName: {{ .Release.Name }}-rushmini-assets
+              servicePort: 80
+  {{- if .Values.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.hostname }}
+      secretName: {{ .Release.Name }}-tls
+  {{- end -}}

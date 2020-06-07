@@ -1,0 +1,52 @@
+questions:
+  - variable: hostname
+    label: Application Host Name
+    description: Host name of application
+    type: hostname
+    required: true
+    group: RushHour settings
+
+  - variable: tls.enabled
+    label: Enable HTTPS
+    description: Application endpoint uses SSL
+    type: boolean
+    defalut: false
+    show_subquestion_if: true
+    subquestions:
+      - variable: tls.cert
+        label: SSL Certificate
+        description: SSL Certificate by PEM format
+        type: multiline
+        required: true
+        default: |-
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+      - variable: tls.key
+        label: SSL Private Key
+        description: SSL Private by PEM format
+        type: multiline
+        required: true
+        default: |-
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+    group: SSL settings
+
+  - variable: pv.enabled
+    label: Uses PersistentVolume
+    description: stores application log and database in PersitentVolume
+    type: boolean
+    default: false
+    show_subquestion_if: true
+    subquestions:
+      - variable: pv.storageClassName
+        label: Storage Class Name
+        description: Class name for user data stored storage
+        type: storageclass
+        required: true
+      - variable: pv.capacity
+        label: Storage Capacity
+        description: Disk size for user data stored storage
+        type: string
+        default: 10Gi
+        required: true
+    group: Storage settings
